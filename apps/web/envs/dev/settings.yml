@@ -1,0 +1,10 @@
+analytics:
+  enabled: false
+
+ui:
+  theme: light
+  features:
+    newSearch: true
+    darkMode: true
+
+apiBaseUrl: https://api-dev.comp.internal

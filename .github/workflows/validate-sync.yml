@@ -1,0 +1,64 @@
+name: validate-sync
+
+on:
+  pull_request:
+    paths:
+      - 'apps/**'
+      - 'argocd/**'
+      - 'tools/**'
+
+jobs:
+  kustomize-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: imranismail/setup-kustomize@v2
+      - name: Build every env
+        run: |
+          fail=0
+          for k in apps/*/envs/*/kustomization.yaml; do
+            d=$(dirname "$k")
+            echo "== $d =="
+            kustomize build "$d" >/dev/null || fail=1
+          done
+          exit $fail
+
+  kubeconform:
+    runs-on: ubuntu-latest
+    needs: kustomize-build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: imranismail/setup-kustomize@v2
+      - name: Install kubeconform
+        run: |
+          curl -sSL -o /tmp/kc.tgz \
+            https://github.com/yannh/kubeconform/releases/latest/download/kubeconform-linux-amd64.tar.gz
+          tar -xzf /tmp/kc.tgz -C /usr/local/bin kubeconform
+      - name: Validate against k8s + Argo Rollouts schema
+        run: |
+          fail=0
+          for k in apps/*/envs/*/kustomization.yaml; do
+            d=$(dirname "$k")
+            kustomize build "$d" | kubeconform \
+              -strict -summary -ignore-missing-schemas \
+              -schema-location default \
+              -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json' \
+              || fail=1
+          done
+          exit $fail
+
+  config-schema:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { path: deploy }
+      - uses: actions/checkout@v4
+        with:
+          repository: comp/comp-proj-app-demo
+          path: app
+          token: ${{ secrets.APP_REPO_READ_TOKEN }}
+      - uses: mikefarah/yq@master
+      - name: Cross-check schema
+        env:
+          APP_REPO_PATH: ${{ github.workspace }}/app
+        run: cd deploy && ./tools/validate-config.sh

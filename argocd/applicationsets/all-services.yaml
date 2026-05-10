@@ -1,0 +1,53 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: comp-proj-services
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: [missingkey=error]
+
+  # Single source of truth: any folder under apps/<service>/envs/<env>/
+  # automatically becomes an Argo CD Application named <service>-<env>.
+  # Adding a new env or service is just adding a folder.
+  generators:
+    - git:
+        repoURL: https://github.com/comp/comp-proj-app-demo-deployment
+        revision: main
+        directories:
+          - path: apps/*/envs/*
+
+  template:
+    metadata:
+      # path.segments = ["apps", "<service>", "envs", "<env>"]
+      name: '{{index .path.segments 1}}-{{index .path.segments 3}}'
+      labels:
+        app.kubernetes.io/part-of: comp-proj
+        comp.io/service: '{{index .path.segments 1}}'
+        comp.io/env: '{{index .path.segments 3}}'
+    spec:
+      project: comp-proj
+      source:
+        repoURL: https://github.com/comp/comp-proj-app-demo-deployment
+        targetRevision: main
+        path: '{{.path.path}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{index .path.segments 1}}-{{index .path.segments 3}}'
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true
+          - ApplyOutOfSyncOnly=true
+      revisionHistoryLimit: 10
+
+  # Auto-sync everywhere except prod, which requires manual sync as a
+  # production safety net (per DEFINITION.md).
+  templatePatch: |
+    {{- if ne (index .path.segments 3) "prod" }}
+    spec:
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+    {{- end }}

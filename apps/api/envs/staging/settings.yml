@@ -1,0 +1,15 @@
+logging:
+  level:
+    root: INFO
+    com.comp.api: INFO
+  format: json
+
+server:
+  shutdown: graceful
+  http:
+    timeout: 5s
+
+features:
+  newSearch: true
+  darkMode: true
+  experimentalCheckout: false

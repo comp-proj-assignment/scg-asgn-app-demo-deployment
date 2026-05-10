@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: api-qa
+
+resources:
+  - ../../base
+
+components:
+  - ../../variants/non-prod
+  - ../../variants/canary-fast
+
+patches:
+  - path: version.yml
+    target: { kind: Rollout, name: api }
+  - path: replicas.yml
+    target: { kind: Rollout, name: api }
+
+configMapGenerator:
+  - name: api-settings
+    files: [settings.yml]
+  - name: api-static
+    files: [static.yml]

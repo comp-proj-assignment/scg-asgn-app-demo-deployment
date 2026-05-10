@@ -1,0 +1,4 @@
+# Copy of staging/version.yml after PR + 2 approvers + 24h soak.
+- op: replace
+  path: /spec/template/spec/containers/0/image
+  value: ghcr.io/comp/api:v3.3.0

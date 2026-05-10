@@ -1,0 +1,25 @@
+name: promote-staging
+
+on:
+  workflow_dispatch:
+    inputs:
+      service:
+        description: 'Service to promote (api | web)'
+        required: true
+        type: choice
+        options: [api, web]
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - name: Configure git
+        run: |
+          git config user.name  "comp-promote-bot"
+          git config user.email "comp-promote-bot@users.noreply.github.com"
+      - name: Copy QA → STAGING version.yml
+        run: ./tools/promote-to-staging.sh "${{ inputs.service }}"

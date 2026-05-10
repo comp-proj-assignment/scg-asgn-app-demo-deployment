@@ -1,0 +1,48 @@
+name: promote-prod
+
+on:
+  workflow_dispatch:
+    inputs:
+      service:
+        description: 'Service to promote (api | web)'
+        required: true
+        type: choice
+        options: [api, web]
+      version:
+        description: 'Semver tag (e.g. v3.3.0). Must already be on STAGING.'
+        required: true
+
+jobs:
+  soak-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - name: Verify ≥24h soak in STAGING
+        run: |
+          file="apps/${{ inputs.service }}/envs/staging/version.yml"
+          last_change=$(git log -1 --format=%ct -- "$file")
+          age=$(( $(date +%s) - last_change ))
+          if (( age < 86400 )); then
+            echo "STAGING last updated $((age/3600))h ago — needs ≥24h soak." >&2
+            exit 1
+          fi
+          echo "Soak OK: $((age/3600))h"
+
+  open-pr:
+    needs: soak-check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - name: Configure git
+        run: |
+          git config user.name  "comp-promote-bot"
+          git config user.email "comp-promote-bot@users.noreply.github.com"
+      - name: Open PR copying STAGING → PROD version.yml
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./tools/promote-to-prod.sh "${{ inputs.service }}" "${{ inputs.version }}"

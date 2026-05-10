@@ -1,0 +1,15 @@
+apps/*/envs/dev/            @comp/dev-team
+apps/*/envs/qa/             @comp/dev-team @comp/qa-team
+apps/*/envs/staging/        @comp/sre-team
+apps/*/envs/prod/           @comp/sre-team @comp/release-managers
+
+# Shared layers — touch only after the change is proven in every env.
+apps/*/base/                @comp/sre-team
+apps/*/variants/            @comp/sre-team
+
+# Argo CD config (sensitive)
+argocd/                     @comp/sre-team
+
+# Promotion plumbing
+tools/                      @comp/sre-team
+.github/                    @comp/sre-team

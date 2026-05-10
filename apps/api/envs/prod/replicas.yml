@@ -1,0 +1,5 @@
+# HPA in variants/high-traffic owns scale; this is just the floor for
+# the initial Rollout revision before HPA kicks in.
+- op: replace
+  path: /spec/replicas
+  value: 5

@@ -1,0 +1,9 @@
+database:
+  url: postgresql://api-staging-db.comp.internal:5432/api_staging
+  pool: { max: 20 }
+
+redis:
+  url: redis://api-staging-redis.comp.internal:6379
+
+region: ap-southeast-1
+env: staging

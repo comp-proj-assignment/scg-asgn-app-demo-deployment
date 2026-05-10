@@ -1,0 +1,21 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Tells kustomize how to rewrite resource references inside an Argo
+# Rollout (the rollout-transform.yaml extends the built-in Deployment
+# rules to cover Rollout pod templates). Without this, configMapGenerator
+# will hash-suffix the ConfigMap but the Rollout volume reference will
+# still point at the unsuffixed name → pod start failure.
+configurations:
+  - https://argoproj.github.io/argo-rollouts/features/kustomize/rollout-transform.yaml
+
+labels:
+  - includeSelectors: true
+    pairs:
+      app.kubernetes.io/part-of: comp-proj
+
+resources:
+  - rollout.yaml
+  - service.yaml
+  - pdb.yaml
+  - analysistemplates.yaml

@@ -1,0 +1,11 @@
+analytics:
+  enabled: true
+  endpoint: https://analytics.comp.com
+
+ui:
+  theme: light
+  features:
+    newSearch: false
+    darkMode: false
+
+apiBaseUrl: https://api.comp.com

@@ -1,0 +1,33 @@
+name: rollback
+
+on:
+  workflow_dispatch:
+    inputs:
+      service:
+        description: 'Service'
+        required: true
+        type: choice
+        options: [api, web]
+      env:
+        description: 'Environment'
+        required: true
+        type: choice
+        options: [dev, qa, staging, prod]
+
+jobs:
+  rollback:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - name: Configure git
+        run: |
+          git config user.name  "comp-rollback-bot"
+          git config user.email "comp-rollback-bot@users.noreply.github.com"
+      - name: Roll back ${{ inputs.service }}/${{ inputs.env }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./tools/rollback.sh "${{ inputs.service }}" "${{ inputs.env }}"

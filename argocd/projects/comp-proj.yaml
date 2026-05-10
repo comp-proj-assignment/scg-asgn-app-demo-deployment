@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: comp-proj
+  namespace: argocd
+spec:
+  description: comp-proj-app-demo services
+  sourceRepos:
+    - https://github.com/comp/comp-proj-app-demo-deployment
+  destinations:
+    - { server: https://kubernetes.default.svc, namespace: 'api-*' }
+    - { server: https://kubernetes.default.svc, namespace: 'web-*' }
+  clusterResourceWhitelist:
+    - { group: '', kind: Namespace }
+  namespaceResourceWhitelist:
+    - { group: '*', kind: '*' }
+  roles:
+    - name: read-only
+      policies:
+        - p, proj:comp-proj:read-only, applications, get, comp-proj/*, allow
+      groups:
+        - comp:dev-team
+    - name: deploy
+      policies:
+        - p, proj:comp-proj:deploy, applications, sync, comp-proj/*, allow
+      groups:
+        - comp:sre-team
+        - comp:release-managers

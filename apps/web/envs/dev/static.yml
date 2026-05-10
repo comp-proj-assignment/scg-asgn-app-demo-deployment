@@ -1,0 +1,3 @@
+env: dev
+region: ap-southeast-1
+publicHost: web-dev.comp.internal

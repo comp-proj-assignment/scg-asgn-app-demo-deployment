@@ -1,0 +1,4 @@
+# Env-shaped, NOT promoted. Sized for a single-developer cluster.
+- op: replace
+  path: /spec/replicas
+  value: 1
