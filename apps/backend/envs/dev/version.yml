@@ -2,4 +2,4 @@
 # main-branch build. Promotion to QA is `cp dev/version.yml qa/version.yml`.
 - op: replace
   path: /spec/template/spec/containers/0/image
-  value: public.ecr.aws/c5a3w2d1/backend:abc1234
+  value: public.ecr.aws/c5a3w2d1/backend:4913e49b74a6
