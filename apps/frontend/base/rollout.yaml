@@ -47,6 +47,14 @@ spec:
               value: /etc/frontend/settings.yml
             - name: BACKEND_URL
               value: http://backend-stable
+            - name: NEXT_PUBLIC_APP_VERSION
+              value: "dev"
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: ROLLOUT_COLOR
+              value: "blue"
           volumeMounts:
             - { name: settings,    mountPath: /etc/frontend, readOnly: true }
             - { name: tmp,         mountPath: /tmp }

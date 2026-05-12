@@ -55,6 +55,14 @@ spec:
               value: file:/etc/backend/settings.yml
             - name: MANAGEMENT_SERVER_PORT
               value: "8081"
+            - name: APP_VERSION
+              value: "dev"                            # override per env or via CI
+            - name: APP_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: APP_ROLLOUT_COLOR
+              value: "blue"                           # flips to "green" on the new revision
           volumeMounts:
             - { name: settings, mountPath: /etc/backend, readOnly: true }
             - { name: tmp,      mountPath: /tmp }
