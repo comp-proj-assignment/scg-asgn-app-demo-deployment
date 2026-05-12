@@ -1,6 +1,6 @@
 analytics:
   enabled: true
-  endpoint: https://analytics-qa.comp.internal
+  endpoint: https://analytics-uat.comp.internal
 
 ui:
   theme: light
@@ -8,4 +8,4 @@ ui:
     newSearch: true
     darkMode: true
 
-apiBaseUrl: https://api-qa.comp.internal
+apiBaseUrl: https://api-uat.comp.internal

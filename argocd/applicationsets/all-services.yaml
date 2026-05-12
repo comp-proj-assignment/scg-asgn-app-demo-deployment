@@ -12,7 +12,7 @@ spec:
   # Adding a new env or service is just adding a folder.
   generators:
     - git:
-        repoURL: https://github.com/comp/comp-proj-app-demo-deployment
+        repoURL: https://github.com/scg-sre/scg-asgn-app-demo-deployment
         revision: main
         directories:
           - path: apps/*/envs/*
@@ -28,7 +28,7 @@ spec:
     spec:
       project: comp-proj
       source:
-        repoURL: https://github.com/comp/comp-proj-app-demo-deployment
+        repoURL: https://github.com/scg-sre/scg-asgn-app-demo-deployment
         targetRevision: main
         path: '{{.path.path}}'
       destination:

@@ -4,7 +4,7 @@
 set -euo pipefail
 
 SERVICE="${1:?service required}"
-ENV="${2:?env required (dev|qa|staging|prod)}"
+ENV="${2:?env required (dev|sit|uat|preprod|prod)}"
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 FILE="apps/${SERVICE}/envs/${ENV}/version.yml"
 

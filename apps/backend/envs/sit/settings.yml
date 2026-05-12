@@ -1,15 +1,15 @@
 logging:
   level:
     root: INFO
-    com.comp.backend: DEBUG
+    com.comp.backend: INFO
   format: json
 
 server:
   shutdown: graceful
   http:
-    timeout: 10s
+    timeout: 5s
 
 features:
   newSearch: true
   darkMode: true
-  experimentalCheckout: true
+  experimentalCheckout: false

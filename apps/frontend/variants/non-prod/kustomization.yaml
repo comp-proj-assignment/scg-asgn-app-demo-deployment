@@ -2,7 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 
 # Env-class label only. Canary cadence is now in variants/canary-fast,
-# so staging can compose this (for the non-prod label) without losing
+# so sit can compose this (for the non-prod label) without losing
 # the analysis-gated canary.
 
 patches:

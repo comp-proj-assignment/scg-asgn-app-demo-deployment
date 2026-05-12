@@ -6,7 +6,7 @@ metadata:
 spec:
   description: comp-proj-app-demo services
   sourceRepos:
-    - https://github.com/comp/comp-proj-app-demo-deployment
+    - https://github.com/scg-sre/scg-asgn-app-demo-deployment
   destinations:
     - { server: https://kubernetes.default.svc, namespace: 'backend-*' }
     - { server: https://kubernetes.default.svc, namespace: 'frontend-*' }

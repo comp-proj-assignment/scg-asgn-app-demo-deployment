@@ -1,6 +1,6 @@
 analytics:
   enabled: true
-  endpoint: https://analytics-staging.comp.internal
+  endpoint: https://analytics-preprod.comp.internal
 
 ui:
   theme: light
@@ -8,4 +8,4 @@ ui:
     newSearch: true
     darkMode: true
 
-apiBaseUrl: https://api-staging.comp.internal
+apiBaseUrl: https://api-preprod.comp.internal

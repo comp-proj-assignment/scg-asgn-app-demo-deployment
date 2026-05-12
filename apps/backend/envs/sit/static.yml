@@ -1,0 +1,9 @@
+database:
+  url: postgresql://backend-sit-db.comp.internal:5432/api_sit
+  pool: { max: 20 }
+
+redis:
+  url: redis://backend-sit-redis.comp.internal:6379
+
+region: ap-southeast-1
+env: sit

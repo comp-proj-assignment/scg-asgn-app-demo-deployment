@@ -1,0 +1,9 @@
+database:
+  url: postgresql://backend-preprod-db.comp.internal:5432/api_preprod
+  pool: { max: 20 }
+
+redis:
+  url: redis://backend-preprod-redis.comp.internal:6379
+
+region: ap-southeast-1
+env: preprod

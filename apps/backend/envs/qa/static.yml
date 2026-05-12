@@ -1,9 +1,0 @@
-database:
-  url: postgresql://backend-qa-db.comp.internal:5432/api_qa
-  pool: { max: 10 }
-
-redis:
-  url: redis://backend-qa-redis.comp.internal:6379
-
-region: ap-southeast-1
-env: qa

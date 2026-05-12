@@ -1,0 +1,11 @@
+analytics:
+  enabled: true
+  endpoint: https://analytics-sit.comp.internal
+
+ui:
+  theme: light
+  features:
+    newSearch: true
+    darkMode: true
+
+apiBaseUrl: https://api-sit.comp.internal

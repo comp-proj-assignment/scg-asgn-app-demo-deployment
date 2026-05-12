@@ -1,5 +1,0 @@
-# Promotable. Updated when a release branch is cut in comp-proj-app-demo.
-# Same image then flows QA → STAGING → PROD by file-copy.
-- op: replace
-  path: /spec/template/spec/containers/0/image
-  value: public.ecr.aws/c5a3w2d1/backend:v3.3.0-rc1
