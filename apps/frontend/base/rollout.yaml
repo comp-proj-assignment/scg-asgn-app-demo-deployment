@@ -62,12 +62,13 @@ spec:
           resources:
             requests: { cpu: 100m, memory: 128Mi }
             limits:   { cpu: 500m, memory: 512Mi }
+          # Probe a frontend-local route (NOT /api/*, which proxies to backend).
           livenessProbe:
-            httpGet: { path: /api/healthz, port: http }
+            httpGet: { path: /meta, port: http }
             initialDelaySeconds: 20
             periodSeconds: 10
           readinessProbe:
-            httpGet: { path: /api/readyz, port: http }
+            httpGet: { path: /meta, port: http }
             initialDelaySeconds: 5
             periodSeconds: 5
           securityContext:
