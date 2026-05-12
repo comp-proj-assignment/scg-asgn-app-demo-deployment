@@ -55,6 +55,7 @@ spec:
               value: file:/etc/backend/settings.yml
           volumeMounts:
             - { name: settings, mountPath: /etc/backend, readOnly: true }
+            - { name: tmp,      mountPath: /tmp }
           resources:
             requests: { cpu: 200m, memory: 256Mi }
             limits:   { cpu: 1000m, memory: 1Gi }
@@ -74,3 +75,5 @@ spec:
         - name: settings
           configMap:
             name: backend-settings    # rewritten by kustomize → backend-settings-<hash>
+        - name: tmp
+          emptyDir: { sizeLimit: 256Mi }

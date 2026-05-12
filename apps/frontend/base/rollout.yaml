@@ -46,7 +46,9 @@ spec:
             - name: NEXT_PUBLIC_CONFIG_PATH
               value: /etc/frontend/settings.yml
           volumeMounts:
-            - { name: settings, mountPath: /etc/frontend, readOnly: true }
+            - { name: settings,    mountPath: /etc/frontend, readOnly: true }
+            - { name: tmp,         mountPath: /tmp }
+            - { name: next-cache,  mountPath: /app/.next/cache }
           resources:
             requests: { cpu: 100m, memory: 128Mi }
             limits:   { cpu: 500m, memory: 512Mi }
@@ -66,3 +68,7 @@ spec:
         - name: settings
           configMap:
             name: frontend-settings
+        - name: tmp
+          emptyDir: { sizeLimit: 128Mi }
+        - name: next-cache
+          emptyDir: { sizeLimit: 256Mi }
