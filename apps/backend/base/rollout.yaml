@@ -59,7 +59,7 @@ spec:
             - { name: settings, mountPath: /etc/backend, readOnly: true }
             - { name: tmp,      mountPath: /tmp }
           resources:
-            requests: { cpu: 200m, memory: 256Mi }
+            requests: { cpu: 100m, memory: 256Mi }
             limits:   { cpu: 1000m, memory: 1Gi }
           livenessProbe:
             httpGet: { path: /actuator/health/liveness, port: mgmt }

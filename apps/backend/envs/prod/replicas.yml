@@ -2,4 +2,4 @@
 # the initial Rollout revision before HPA kicks in.
 - op: replace
   path: /spec/replicas
-  value: 5
+  value: 0
