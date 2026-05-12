@@ -2,12 +2,6 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 namespace: comp-proj-dev
-
-labels:
-  - includeSelectors: false
-    includeTemplates: true
-    pairs:
-      comp.io/env: dev
 resources:
   - ../../base
 
@@ -18,6 +12,19 @@ components:
 # on each dev bump). No `images:` transformer — it would run AFTER
 # patches and clobber the real tag with the placeholder.
 patches:
+  - target: { kind: PodDisruptionBudget, name: backend }
+    patch: |-
+      - op: replace
+        path: /spec/minAvailable
+        value: 0
+      - op: add
+        path: /spec/selector/matchLabels/comp.io~1env
+        value: dev
+  - target: { kind: Rollout, name: backend }
+    patch: |-
+      - op: add
+        path: /spec/template/metadata/labels/comp.io~1env
+        value: dev
   - path: version.yml
     target: { kind: Rollout, name: backend }
   - path: replicas.yml
