@@ -48,8 +48,8 @@ spec:
           image: public.ecr.aws/c5a3w2d1/backend:placeholder        # overridden by envs/<env>/version.yml
           imagePullPolicy: IfNotPresent
           ports:
-            - { name: http, containerPort: 8080 }
-            - { name: mgmt, containerPort: 8081 }
+            - { name: http, containerPort: 8080, protocol: TCP }
+            - { name: mgmt, containerPort: 8081, protocol: TCP }
           env:
             - name: SPRING_CONFIG_ADDITIONAL_LOCATION
               value: file:/etc/backend/settings.yml

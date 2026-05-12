@@ -6,7 +6,7 @@ metadata:
 spec:
   selector: { app.kubernetes.io/name: backend }
   ports:
-    - { name: http, port: 80, targetPort: http }
+    - { name: http, port: 80, targetPort: http, protocol: TCP }
 ---
 apiVersion: v1
 kind: Service
@@ -16,7 +16,7 @@ metadata:
 spec:
   selector: { app.kubernetes.io/name: backend }
   ports:
-    - { name: http, port: 80, targetPort: http }
+    - { name: http, port: 80, targetPort: http, protocol: TCP }
 ---
 apiVersion: v1
 kind: ServiceAccount

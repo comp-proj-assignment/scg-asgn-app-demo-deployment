@@ -41,7 +41,7 @@ spec:
           image: public.ecr.aws/c5a3w2d1/frontend:placeholder
           imagePullPolicy: IfNotPresent
           ports:
-            - { name: http, containerPort: 3000 }
+            - { name: http, containerPort: 3000, protocol: TCP }
           env:
             - name: NEXT_PUBLIC_CONFIG_PATH
               value: /etc/frontend/settings.yml
