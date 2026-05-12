@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
   name: comp-proj
-  namespace: argocd
+  namespace: platform-system
 spec:
   description: comp-proj-app-demo services
   sourceRepos:

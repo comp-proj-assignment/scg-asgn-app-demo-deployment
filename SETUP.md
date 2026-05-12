@@ -18,8 +18,8 @@ These live cluster-side, not in this repo. One-time per cluster:
 
 ```bash
 # Argo CD
-kubectl create namespace argocd
-kubectl apply -n argocd -f \
+kubectl create namespace platform-system
+kubectl apply -n platform-system -f \
   https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
 # Argo Rollouts (CRDs + controller)
@@ -34,10 +34,10 @@ brew install argoproj/tap/kubectl-argo-rollouts
 ## 2. Log in to Argo CD
 
 ```bash
-kubectl -n argocd port-forward svc/argocd-server 8080:443 &
+kubectl -n platform-system port-forward svc/argocd-server 8080:443 &
 argocd login localhost:8080 \
   --username admin \
-  --password "$(kubectl -n argocd get secret argocd-initial-admin-secret \
+  --password "$(kubectl -n platform-system get secret argocd-initial-admin-secret \
     -o jsonpath='{.data.password}' | base64 -d)"
 ```
 

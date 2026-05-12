@@ -11,7 +11,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: bootstrap
-  namespace: argocd
+  namespace: platform-system
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
@@ -24,7 +24,7 @@ spec:
       recurse: true
   destination:
     server: https://kubernetes.default.svc
-    namespace: argocd
+    namespace: platform-system
   syncPolicy:
     automated:
       prune: true
