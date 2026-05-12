@@ -53,6 +53,8 @@ spec:
           env:
             - name: SPRING_CONFIG_ADDITIONAL_LOCATION
               value: file:/etc/backend/settings.yml
+            - name: MANAGEMENT_SERVER_PORT
+              value: "8081"
           volumeMounts:
             - { name: settings, mountPath: /etc/backend, readOnly: true }
             - { name: tmp,      mountPath: /tmp }
