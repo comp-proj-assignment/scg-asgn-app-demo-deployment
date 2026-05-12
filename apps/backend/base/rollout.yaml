@@ -1,0 +1,87 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: backend
+  labels:
+    app.kubernetes.io/name: backend
+    app.kubernetes.io/component: backend
+spec:
+  replicas: 2
+  revisionHistoryLimit: 5
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: backend
+  strategy:
+    canary:
+      canaryService: backend-canary
+      stableService: backend-stable
+      trafficRouting:
+        istio:
+          virtualService:
+            name: backend
+            routes:
+              - primary
+      steps:
+        - setWeight: 5
+        - pause: { duration: 2m }
+        - analysis:
+            templates:
+              - templateName: backend-success-rate
+            args:
+              - name: service-name
+                value: backend-canary
+        - setWeight: 25
+        - pause: { duration: 5m }
+        - analysis:
+            templates:
+              - templateName: backend-success-rate
+              - templateName: backend-latency-p99
+            args:
+              - name: service-name
+                value: backend-canary
+        - setWeight: 50
+        - pause: { duration: 5m }
+        - setWeight: 100
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: backend
+        app.kubernetes.io/component: backend
+    spec:
+      serviceAccountName: backend
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        fsGroup: 10001
+        seccompProfile: { type: RuntimeDefault }
+      containers:
+        - name: backend
+          image: public.ecr.aws/c5a3w2d1/backend:placeholder        # overridden by envs/<env>/version.yml
+          imagePullPolicy: IfNotPresent
+          ports:
+            - { name: http, containerPort: 8080 }
+            - { name: mgmt, containerPort: 8081 }
+          env:
+            - name: SPRING_CONFIG_ADDITIONAL_LOCATION
+              value: file:/etc/backend/settings.yml
+          volumeMounts:
+            - { name: settings, mountPath: /etc/backend, readOnly: true }
+          resources:
+            requests: { cpu: 200m, memory: 256Mi }
+            limits:   { cpu: 1000m, memory: 1Gi }
+          livenessProbe:
+            httpGet: { path: /actuator/health/liveness, port: mgmt }
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet: { path: /actuator/health/readiness, port: mgmt }
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: { drop: [ALL] }
+      volumes:
+        - name: settings
+          configMap:
+            name: backend-settings    # rewritten by kustomize → backend-settings-<hash>

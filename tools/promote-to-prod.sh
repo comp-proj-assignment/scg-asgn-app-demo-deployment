@@ -4,7 +4,7 @@
 # Usage: tools/promote-to-prod.sh <service> <version>
 set -euo pipefail
 
-SERVICE="${1:?service name required (e.g. api, web)}"
+SERVICE="${1:?service name required (e.g. backend, frontend)}"
 VERSION="${2:?semver tag required (e.g. v3.3.0)}"
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SRC="${REPO_ROOT}/apps/${SERVICE}/envs/staging/version.yml"

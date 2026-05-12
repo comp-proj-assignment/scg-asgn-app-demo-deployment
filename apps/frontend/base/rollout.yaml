@@ -1,0 +1,76 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: frontend
+  labels:
+    app.kubernetes.io/name: frontend
+    app.kubernetes.io/component: frontend
+spec:
+  replicas: 2
+  revisionHistoryLimit: 5
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: frontend
+  strategy:
+    canary:
+      canaryService: frontend-canary
+      stableService: frontend-stable
+      trafficRouting:
+        istio:
+          virtualService:
+            name: frontend
+            routes:
+              - primary
+      steps:
+        - setWeight: 5
+        - pause: { duration: 2m }
+        - analysis:
+            templates: [{ templateName: frontend-success-rate }]
+            args: [{ name: service-name, value: frontend-canary }]
+        - setWeight: 25
+        - pause: { duration: 5m }
+        - setWeight: 50
+        - pause: { duration: 5m }
+        - setWeight: 100
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: frontend
+        app.kubernetes.io/component: frontend
+    spec:
+      serviceAccountName: frontend
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        fsGroup: 10001
+        seccompProfile: { type: RuntimeDefault }
+      containers:
+        - name: frontend
+          image: public.ecr.aws/c5a3w2d1/frontend:placeholder
+          imagePullPolicy: IfNotPresent
+          ports:
+            - { name: http, containerPort: 3000 }
+          env:
+            - name: NEXT_PUBLIC_CONFIG_PATH
+              value: /etc/frontend/settings.yml
+          volumeMounts:
+            - { name: settings, mountPath: /etc/frontend, readOnly: true }
+          resources:
+            requests: { cpu: 100m, memory: 128Mi }
+            limits:   { cpu: 500m, memory: 512Mi }
+          livenessProbe:
+            httpGet: { path: /api/healthz, port: http }
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          readinessProbe:
+            httpGet: { path: /api/readyz, port: http }
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: { drop: [ALL] }
+      volumes:
+        - name: settings
+          configMap:
+            name: frontend-settings

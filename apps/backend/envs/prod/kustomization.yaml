@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: backend-prod
+
+resources:
+  - ../../base
+
+components:
+  - ../../variants/prod
+  - ../../variants/high-traffic
+
+patches:
+  - path: version.yml
+    target: { kind: Rollout, name: backend }
+  - path: replicas.yml
+    target: { kind: Rollout, name: backend }
+
+configMapGenerator:
+  - name: backend-settings
+    files: [settings.yml]
+  - name: backend-static
+    files: [static.yml]

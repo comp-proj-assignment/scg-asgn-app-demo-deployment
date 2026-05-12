@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+# Replaces the base canary steps with a fast variant: jump to 50%,
+# brief pause, then 100% — no analysis gates. Composed by envs that
+# don't need progressive analysis (dev, qa).
+#
+# NOT composed by staging: we deliberately want staging to exercise
+# the same full canary + Prometheus analysis that prod will run, so
+# bad releases stop in staging instead of stopping in prod.
+
+patches:
+  - target: { kind: Rollout, name: backend }
+    patch: |-
+      - op: replace
+        path: /spec/strategy/canary/steps
+        value:
+          - setWeight: 50
+          - pause: { duration: 30s }
+          - setWeight: 100

@@ -1,0 +1,15 @@
+logging:
+  level:
+    root: WARN
+    com.comp.backend: INFO
+  format: json
+
+server:
+  shutdown: graceful
+  http:
+    timeout: 5s
+
+features:
+  newSearch: false        # not yet enabled in prod
+  darkMode: false
+  experimentalCheckout: false

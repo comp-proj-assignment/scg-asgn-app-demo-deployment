@@ -3,7 +3,7 @@
 # Usage: tools/promote-to-staging.sh <service>
 set -euo pipefail
 
-SERVICE="${1:?service name required (e.g. api, web)}"
+SERVICE="${1:?service name required (e.g. backend, frontend)}"
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SRC="${REPO_ROOT}/apps/${SERVICE}/envs/qa/version.yml"
 DST="${REPO_ROOT}/apps/${SERVICE}/envs/staging/version.yml"

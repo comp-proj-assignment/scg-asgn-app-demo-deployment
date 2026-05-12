@@ -1,4 +1,0 @@
-# Copy of qa/version.yml after manual promotion.
-- op: replace
-  path: /spec/template/spec/containers/0/image
-  value: ghcr.io/comp/api:v3.3.0-rc1

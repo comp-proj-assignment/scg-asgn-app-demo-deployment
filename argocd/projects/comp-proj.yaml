@@ -8,8 +8,8 @@ spec:
   sourceRepos:
     - https://github.com/comp/comp-proj-app-demo-deployment
   destinations:
-    - { server: https://kubernetes.default.svc, namespace: 'api-*' }
-    - { server: https://kubernetes.default.svc, namespace: 'web-*' }
+    - { server: https://kubernetes.default.svc, namespace: 'backend-*' }
+    - { server: https://kubernetes.default.svc, namespace: 'frontend-*' }
   clusterResourceWhitelist:
     - { group: '', kind: Namespace }
   namespaceResourceWhitelist:

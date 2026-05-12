@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: frontend-staging
+
+resources:
+  - ../../base
+
+components:
+  - ../../variants/non-prod
+
+patches:
+  - { path: version.yml, target: { kind: Rollout, name: frontend } }
+  - { path: replicas.yml, target: { kind: Rollout, name: frontend } }
+
+configMapGenerator:
+  - name: frontend-settings
+    files: [settings.yml]
+  - name: frontend-static
+    files: [static.yml]

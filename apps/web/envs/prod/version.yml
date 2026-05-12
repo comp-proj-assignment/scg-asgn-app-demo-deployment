@@ -1,3 +1,0 @@
-- op: replace
-  path: /spec/template/spec/containers/0/image
-  value: ghcr.io/comp/web:v3.3.0

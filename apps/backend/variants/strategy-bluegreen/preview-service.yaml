@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-preview
+  labels: { app.kubernetes.io/name: backend }
+spec:
+  # Argo Rollouts manages the rollouts-pod-template-hash selector at
+  # runtime so this service points at the new ReplicaSet only.
+  selector: { app.kubernetes.io/name: backend }
+  ports:
+    - { name: http, port: 80, targetPort: http }

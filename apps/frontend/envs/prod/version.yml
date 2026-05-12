@@ -1,0 +1,3 @@
+- op: replace
+  path: /spec/template/spec/containers/0/image
+  value: public.ecr.aws/c5a3w2d1/frontend:v3.3.0

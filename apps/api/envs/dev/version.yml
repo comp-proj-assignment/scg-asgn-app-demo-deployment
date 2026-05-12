@@ -1,5 +1,0 @@
-# Promotable. CI bot in comp-proj-app-demo overwrites this on every
-# main-branch build. Promotion to QA is `cp dev/version.yml qa/version.yml`.
-- op: replace
-  path: /spec/template/spec/containers/0/image
-  value: ghcr.io/comp/api:abc1234

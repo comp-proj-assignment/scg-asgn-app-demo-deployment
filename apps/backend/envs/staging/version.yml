@@ -1,0 +1,4 @@
+# Copy of qa/version.yml after manual promotion.
+- op: replace
+  path: /spec/template/spec/containers/0/image
+  value: public.ecr.aws/c5a3w2d1/backend:v3.3.0-rc1
