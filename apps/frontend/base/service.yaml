@@ -11,7 +11,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: frontend-canary
+  name: frontend-preview
   labels: { app.kubernetes.io/name: frontend }
 spec:
   selector: { app.kubernetes.io/name: frontend }

@@ -8,7 +8,6 @@ resources:
 
 components:
   - ../../variants/non-prod
-  - ../../variants/canary-fast
 
 # Image tag tracked in version.yml so promotion is a single-file copy.
 images:

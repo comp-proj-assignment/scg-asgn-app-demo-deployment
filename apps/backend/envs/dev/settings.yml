@@ -1,5 +1,5 @@
 # Promotable business settings. Editing this file produces a new
-# hash-suffixed ConfigMap → new Rollout revision → canary rollout.
+# hash-suffixed ConfigMap → new Rollout revision → blue-green cutover.
 logging:
   level:
     root: INFO

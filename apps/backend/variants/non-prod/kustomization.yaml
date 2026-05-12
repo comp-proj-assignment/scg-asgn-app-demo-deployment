@@ -4,9 +4,9 @@ kind: Component
 # Marks the workload as non-prod (used for scheduling, NetworkPolicy,
 # and observability filters). Composed by dev, sit, uat, AND preprod.
 #
-# Canary cadence is a separate concern — see variants/canary-fast for
+# Strategy is now blue-green by default (see base/rollout.yaml).
 # the fast non-analysis cadence, or compose nothing extra to inherit
-# the base full canary with analysis (what sit does).
+# the base blue-green with analysis (what sit does).
 
 patches:
   - target: { kind: Rollout, name: backend }

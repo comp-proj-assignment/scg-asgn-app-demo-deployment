@@ -12,26 +12,18 @@ spec:
     matchLabels:
       app.kubernetes.io/name: frontend
   strategy:
-    canary:
-      canaryService: frontend-canary
-      stableService: frontend-stable
-      trafficRouting:
-        istio:
-          virtualService:
-            name: frontend
-            routes:
-              - primary
-      steps:
-        - setWeight: 5
-        - pause: { duration: 2m }
-        - analysis:
-            templates: [{ templateName: frontend-success-rate }]
-            args: [{ name: service-name, value: frontend-canary }]
-        - setWeight: 25
-        - pause: { duration: 5m }
-        - setWeight: 50
-        - pause: { duration: 5m }
-        - setWeight: 100
+    blueGreen:
+      activeService: frontend-stable
+      previewService: frontend-preview
+      autoPromotionEnabled: false
+      scaleDownDelaySeconds: 300
+      abortScaleDownDelaySeconds: 30
+      prePromotionAnalysis:
+        templates: [{ templateName: frontend-success-rate }]
+        args: [{ name: service-name, value: frontend-preview }]
+      postPromotionAnalysis:
+        templates: [{ templateName: frontend-success-rate }]
+        args: [{ name: service-name, value: frontend-stable }]
   template:
     metadata:
       labels:

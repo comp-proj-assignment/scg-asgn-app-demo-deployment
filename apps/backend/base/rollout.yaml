@@ -12,36 +12,25 @@ spec:
     matchLabels:
       app.kubernetes.io/name: backend
   strategy:
-    canary:
-      canaryService: backend-canary
-      stableService: backend-stable
-      trafficRouting:
-        istio:
-          virtualService:
-            name: backend
-            routes:
-              - primary
-      steps:
-        - setWeight: 5
-        - pause: { duration: 2m }
-        - analysis:
-            templates:
-              - templateName: backend-success-rate
-            args:
-              - name: service-name
-                value: backend-canary
-        - setWeight: 25
-        - pause: { duration: 5m }
-        - analysis:
-            templates:
-              - templateName: backend-success-rate
-              - templateName: backend-latency-p99
-            args:
-              - name: service-name
-                value: backend-canary
-        - setWeight: 50
-        - pause: { duration: 5m }
-        - setWeight: 100
+    blueGreen:
+      activeService: backend-stable
+      previewService: backend-preview
+      autoPromotionEnabled: false          # require manual promote (UI/CLI)
+      scaleDownDelaySeconds: 300           # keep old RS for 5m post-promote (fast rollback)
+      abortScaleDownDelaySeconds: 30
+      prePromotionAnalysis:
+        templates:
+          - templateName: backend-success-rate
+          - templateName: backend-latency-p99
+        args:
+          - name: service-name
+            value: backend-preview
+      postPromotionAnalysis:
+        templates:
+          - templateName: backend-success-rate
+        args:
+          - name: service-name
+            value: backend-stable
   template:
     metadata:
       labels:

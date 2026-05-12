@@ -8,7 +8,6 @@ resources:
 
 components:
   - ../../variants/non-prod
-  - ../../variants/canary-fast
 
 patches:
   - { path: version.yml, target: { kind: Rollout, name: frontend } }
