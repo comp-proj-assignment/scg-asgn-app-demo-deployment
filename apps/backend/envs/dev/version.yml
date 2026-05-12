@@ -2,4 +2,4 @@
 # main-branch build. Promotion path: dev → sit → uat → preprod → prod (each via PR).
 - op: replace
   path: /spec/template/spec/containers/0/image
-  value: public.ecr.aws/c5a3w2d1/backend:4913e49b74a6
+  value: public.ecr.aws/c5a3w2d1/backend:1956087d5416
