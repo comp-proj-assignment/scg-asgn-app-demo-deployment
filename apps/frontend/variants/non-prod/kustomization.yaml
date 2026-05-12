@@ -1,13 +1,11 @@
 apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 
-# Env-class label only. Strategy is blue-green via base/rollout.yaml.
-# so sit can compose this (for the non-prod label) without losing
-# the analysis-gated blue-green promotion.
+# Env-class label propagated to labels + selectors + pod templates.
+# Strategy stays blue-green via base/rollout.yaml.
 
-patches:
-  - target: { kind: Rollout, name: frontend }
-    patch: |-
-      - op: add
-        path: /spec/template/metadata/labels/comp.io~1env-class
-        value: non-prod
+labels:
+  - includeSelectors: true
+    includeTemplates: true
+    pairs:
+      comp.io/env-class: non-prod

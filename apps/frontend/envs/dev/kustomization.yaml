@@ -3,6 +3,11 @@ kind: Kustomization
 
 namespace: comp-proj-dev
 
+labels:
+  - includeSelectors: false
+    includeTemplates: true
+    pairs:
+      comp.io/env: dev
 resources:
   - ../../base
 
@@ -10,6 +15,11 @@ components:
   - ../../variants/non-prod
 
 patches:
+  - target: { kind: PodDisruptionBudget, name: frontend }
+    patch: |-
+      - op: replace
+        path: /spec/minAvailable
+        value: 0
   - { path: version.yml, target: { kind: Rollout, name: frontend } }
   - { path: replicas.yml, target: { kind: Rollout, name: frontend } }
 

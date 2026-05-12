@@ -3,6 +3,11 @@ kind: Kustomization
 
 namespace: comp-proj-prod
 
+labels:
+  - includeSelectors: false
+    includeTemplates: true
+    pairs:
+      comp.io/env: prod
 resources:
   - ../../base
 

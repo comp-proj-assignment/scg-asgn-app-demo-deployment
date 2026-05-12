@@ -4,12 +4,15 @@ kind: Component
 # Shared characteristics of every prod env (single-region today, but
 # this variant is what every future prod cell will compose).
 
+labels:
+  - includeSelectors: true
+    includeTemplates: true
+    pairs:
+      comp.io/env-class: prod
+
 patches:
   - target: { kind: Rollout, name: backend }
     patch: |-
-      - op: add
-        path: /spec/template/metadata/labels/comp.io~1env-class
-        value: prod
       - op: replace
         path: /spec/template/spec/containers/0/resources/requests/cpu
         value: 500m

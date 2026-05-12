@@ -26,6 +26,10 @@ spec:
         args: [{ name: service-name, value: frontend-stable }]
   template:
     metadata:
+      # kustomize injects at build time (don't edit those here):
+      #   app.kubernetes.io/part-of: comp-proj   (base/kustomization.yaml)
+      #   comp.io/env-class: <non-prod|prod>     (variants/<class>/kustomization.yaml)
+      #   comp.io/env: <dev|sit|uat|preprod|prod>(envs/<env>/kustomization.yaml)
       labels:
         app.kubernetes.io/name: frontend
         app.kubernetes.io/component: frontend

@@ -1,16 +1,12 @@
 apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 
-# Marks the workload as non-prod (used for scheduling, NetworkPolicy,
-# and observability filters). Composed by dev, sit, uat, AND preprod.
-#
-# Strategy is now blue-green by default (see base/rollout.yaml).
-# the fast non-analysis cadence, or compose nothing extra to inherit
-# the base blue-green with analysis (what sit does).
+# Marks the workload as non-prod across labels, selectors, and pod-template.
+# Composed by dev, sit, uat, AND preprod. Strategy stays blue-green from
+# base/rollout.yaml; this variant only adds the env-class identity label.
 
-patches:
-  - target: { kind: Rollout, name: backend }
-    patch: |-
-      - op: add
-        path: /spec/template/metadata/labels/comp.io~1env-class
-        value: non-prod
+labels:
+  - includeSelectors: true
+    includeTemplates: true
+    pairs:
+      comp.io/env-class: non-prod
