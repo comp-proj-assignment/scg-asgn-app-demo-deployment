@@ -21,6 +21,11 @@ patches:
         value: uat
   - { path: version.yml, target: { kind: Rollout, name: frontend } }
   - { path: replicas.yml, target: { kind: Rollout, name: frontend } }
+  - target: { kind: Ingress, name: frontend }
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: appuat.gpevn.com
 
 configMapGenerator:
   - name: frontend-settings

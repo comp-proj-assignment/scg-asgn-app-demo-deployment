@@ -1,3 +1,0 @@
-- How to model your GitOps environments : https://octopus.com/blog/how-to-model-your-gitops-environments
-- Stop using branches for deploying to different GitOps environments : https://octopus.com/blog/stop-using-branches-deploying-different-gitops-environments
-- Progressive delivery for Kubernetes config maps using Argo Rollouts : https://octopus.com/blog/progressive-delivery-for-kubernetes-config-maps-using-argo-rollouts
