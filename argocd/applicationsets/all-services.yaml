@@ -33,7 +33,7 @@ spec:
         path: '{{.path.path}}'
       destination:
         server: https://kubernetes.default.svc
-        namespace: '{{index .path.segments 1}}-{{index .path.segments 3}}'
+        namespace: 'comp-proj-{{index .path.segments 3}}'
       syncPolicy:
         syncOptions:
           - CreateNamespace=true

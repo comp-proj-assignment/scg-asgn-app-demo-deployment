@@ -8,8 +8,7 @@ spec:
   sourceRepos:
     - https://github.com/scg-sre/scg-asgn-app-demo-deployment
   destinations:
-    - { server: https://kubernetes.default.svc, namespace: 'backend-*' }
-    - { server: https://kubernetes.default.svc, namespace: 'frontend-*' }
+    - { server: https://kubernetes.default.svc, namespace: 'comp-proj-*' }
   clusterResourceWhitelist:
     - { group: '', kind: Namespace }
   namespaceResourceWhitelist:

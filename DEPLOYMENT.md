@@ -188,8 +188,12 @@ would any other prod change.
 AppProject `comp-proj` allows the following namespace patterns (set in
 `argocd/projects/comp-proj.yaml`):
 
-- `backend-*`  (covers backend-dev, backend-sit, backend-uat, backend-preprod, backend-prod)
-- `frontend-*` (same)
+- `comp-proj-*`  (covers comp-proj-dev, comp-proj-sit, comp-proj-uat, comp-proj-preprod, comp-proj-prod)
+
+Both `backend` and `frontend` deploy into the **same namespace per environment**
+(e.g. `comp-proj-sit` holds both services' Rollouts, Services, ConfigMaps).
+Resource names are prefixed by service (`backend-stable`, `frontend-stable`)
+so they don't collide.
 
 ApplicationSet generates per-env Argo CD `Application` resources from
 `apps/<svc>/envs/<env>/` paths. Adding a new env = adding a folder.

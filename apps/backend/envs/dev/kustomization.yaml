@@ -1,7 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: backend-dev
+namespace: comp-proj-dev
 
 resources:
   - ../../base
@@ -9,11 +9,9 @@ resources:
 components:
   - ../../variants/non-prod
 
-# Image tag tracked in version.yml so promotion is a single-file copy.
-images:
-  - name: public.ecr.aws/c5a3w2d1/backend
-    newTag: dev-placeholder      # overridden by version.yml via patch below
-
+# Image tag is set by the JSON patch in version.yml (which CI overwrites
+# on each dev bump). No `images:` transformer — it would run AFTER
+# patches and clobber the real tag with the placeholder.
 patches:
   - path: version.yml
     target: { kind: Rollout, name: backend }
